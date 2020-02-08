@@ -49,6 +49,10 @@ Linux VINICIUS-NB 5.3.0-29-lowlatency #31-Ubuntu SMP PREEMPT
 Fri Jan 17 18:32:27 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
+## Saída
+
+![ubuntu-19-10-saida.png](img/ubuntu-19-10-saida.png)
+
 ---
 
 ### FONTES

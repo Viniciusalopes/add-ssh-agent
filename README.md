@@ -8,7 +8,7 @@
 
 - Inicia o ssh-agent;
 
-- Adiciona a chave ssh selecionada, e solicita a senha.
+- Adiciona a chave ssh selecionada ao __ssh-agent__.
 
 
 ## O que falta esse script fazer?

@@ -27,7 +27,30 @@ Em um emulador de terminal, execute os comandos abaixo:
 
 ```/usr/bin/env bash /tmp/add-ssh-agent```
 
+## Onde funcionou
+
+- __UBUNTU STUDIO 19.10__
+
+```
+NAME="Ubuntu"
+VERSION="19.10 (Eoan Ermine)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 19.10"
+VERSION_ID="19.10"
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+VERSION_CODENAME=eoan
+UBUNTU_CODENAME=eoan
+
+Linux VINICIUS-NB 5.3.0-29-lowlatency #31-Ubuntu SMP PREEMPT
+Fri Jan 17 18:32:27 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux
+```
+
 ---
+
 ### FONTES
 [Ajuda do GitHub](https://help.github.com/pt/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 

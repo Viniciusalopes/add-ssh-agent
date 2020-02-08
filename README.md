@@ -23,7 +23,7 @@ Em um emulador de terminal, execute os comandos abaixo:
 
 ```wget https://raw.githubusercontent.com/Viniciusalopes/add-ssh-agent/master/add-ssh-agent -O /tmp/add-ssh-agent```
 
-- Para fazer o executar o script
+- Para executar o script
 
 ```/usr/bin/env bash /tmp/add-ssh-agent```
 

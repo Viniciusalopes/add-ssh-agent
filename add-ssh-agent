@@ -1,0 +1,157 @@
+#!/usr/bin/env bash
+# Template orgulhosamente criado por (Shell-Base)
+
+#-----------HEADER-------------------------------------------------------------|
+# AUTOR             : Vovolinux <suporte@vovolinux.com.br>
+# HOMEPAGE          : https://vovolunux.com.br
+# DATA-DE-CRIAÇÃO   : 08/02/2020 às 16:20
+# PROGRAMA          : add-ssh-agent
+# VERSÃO            : 1.0
+# LICENÇA           : MIT
+# PEQUENA-DESCRIÇÃO : Adicionar chave SSH ao ssh-agent
+# (para utilização do Git/GitHub)
+#
+# CHANGELOG :
+#
+#------------------------------------------------------------------------------|
+
+#--------------------------------- VARIÁVEIS ---------------------------------->
+#
+
+# CORES:
+end=$(tput sgr0)
+bold=$(tput bold)
+fg_red=$(tput setaf 1)
+fg_green=$(tput setaf 2)
+fg_cyan=$(tput setaf 6)
+
+# STRINGS:
+linha_tracos="-----------------------------------------------------------"
+
+# Contador genérico
+n=0
+
+# Array de opções
+opcoes=()
+
+# Opção selecionada no menu
+selecionada=0
+
+# Flag de validação da opção selecionada, [0=false, 1=true]
+invalida=1
+
+# Usuário
+USER=$(whoami)
+
+# Diretório das chaves SSH
+PATH_SSH="/home/${USER}/.ssh"
+
+# Lista de certificados
+PRIVATE_KEYS=()
+
+# Quantidade de chaves SSH encontradas
+LENGHT_PRIVATE_KEYS=0
+
+#------------------------------- FIM-VARIÁVEIS --------------------------------<
+
+#----------------------------------- FUNÇÕES ---------------------------------->
+
+# PRINT
+print_prompt(){
+    printf '%b' "$1 "
+}
+
+print_msg() {
+    printf '%b' "$1\n"
+}
+
+print_msg_success() {
+    printf '%b' "${bold}${fg_green}${1} (${end}${2}${fg_green})${end}\n"
+}
+
+print_msg_error() {
+    printf '%b' "${bold}${fg_red}[ OPA! ] ${1} (${end}${2}${fg_red})${end}\n"
+}
+
+check() {
+    if [[ -d $PATH_SSH ]]; then
+        print_msg_success "Diretório válido!" ${PATH_SSH}
+    else
+        print_msg_error "Diretório inválido!" ${PATH_SSH}
+    fi
+}
+
+set_PRIVATE_KEYS() {
+    # Arquivos do diretório de SSH
+    FILES=($PATH_SSH/*)
+
+    for file in "${FILES[@]}"; do
+        if grep "BEGIN OPENSSH PRIVATE KEY" ${file} >/dev/null; then
+            PRIVATE_KEYS=("${PRIVATE_KEYS[@]}" "${file}")
+        fi
+    done
+
+    LENGHT_PRIVATE_KEYS=${#PRIVATE_KEYS[@]}
+}
+
+list_PRIVATE_KEYS() {
+    n=0
+    if [[ LENGHT_PRIVATE_KEYS -eq 0 ]]; then
+        print_msg_error "Nenhuma chave SSH encontrada!" "em ${PATH_SSH}"
+        exit 1
+    else
+        print_msg_success "Chaves SSH encontradas:" "${LENGHT_PRIVATE_KEYS}"
+
+        for key in "${PRIVATE_KEYS[@]}"; do
+            let n++
+            opcoes=(${opcoes[@]} "$n")
+            print_msg "[$n] $key"
+        done
+    fi
+}
+
+menu_ssh_key() {
+    invalida=1
+    while [ $invalida -eq 1 ]; do
+        list_PRIVATE_KEYS
+        print_msg $linha_tracos
+        print_prompt "Digite o NÚMERO da chave SSH:"
+
+        read selecionada
+
+        for opc in ${opcoes[@]}; do
+            if [ "$selecionada" = "$opc" ]; then
+                invalida=0
+            else
+                print_msg_error "Opção inválida!" $selecionada
+                print_msg $linha_tracos
+            fi
+        done
+    done
+
+    let selecionada--
+}
+
+init_ssh_agent() {
+    eval "$(ssh-agent -s)"
+}
+
+add_ssh_key(){
+    ssh-add ${PRIVATE_KEYS[$selecionada]}
+}
+
+#--------------------------------- FIM-FUNÇÕES --------------------------------<
+
+#----------------------------------- TESTES ----------------------------------->
+
+check
+
+#--------------------------------- FIM-TESTES ---------------------------------<
+
+# Programa começa aqui :)
+print_msg $linha_tracos
+set_PRIVATE_KEYS
+menu_ssh_key
+
+init_ssh_agent
+add_ssh_key

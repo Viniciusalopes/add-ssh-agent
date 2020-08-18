@@ -74,10 +74,8 @@ print_msg_error() {
 }
 
 check() {
-    if [[ -d $PATH_SSH ]]; then
-        print_msg_success "Diretório válido!" ${PATH_SSH}
-    else
-        print_msg_error "Diretório inválido!" ${PATH_SSH}
+    if ! [[ -d $PATH_SSH ]]; then
+        mkdir -v $PATH_SSH
     fi
 }
 
